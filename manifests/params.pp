@@ -14,7 +14,7 @@ class nexus::params {
   case $::operatingsystem {
     'Ubuntu' : {
       case $::operatingsystemrelease {
-        '12.04' : {
+        '14.04' : {
           case $::architecture {
             'amd64' : {
               $java_home = '/usr/lib/jvm/java-7-openjdk-amd64'
