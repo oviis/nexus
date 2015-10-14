@@ -26,6 +26,7 @@ class nexus (
   $bundle      = $nexus::params::bundle,
   $package     = undef,
   $port        = $nexus::params::port,
+  $java_home = $nexus::params::java_home,
   $storage_loc = $nexus::params::storage_loc) inherits nexus::params {
   class { 'nexus::install':
     nexus_bundle  => $bundle,
@@ -33,7 +34,7 @@ class nexus (
     storage_loc   => $storage_loc,
   } -> class { 'nexus::config':
     nexus_port => $port,
-    java_home  => $nexus::params::java_home,
+    java_home  => $java_home,
   } ~> class { 'nexus::service':
     jsw => $nexus::params::jsw,
   }

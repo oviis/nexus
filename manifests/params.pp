@@ -17,7 +17,7 @@ class nexus::params {
         '14.04' : {
           case $::architecture {
             'amd64' : {
-              $java_home = '/usr/lib/jvm/java-7-openjdk-amd64'
+              $java_home = '/usr/bin/java'
               $jsw = 'linux-x86-64'
             }
             default : {

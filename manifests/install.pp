@@ -20,7 +20,7 @@
 # Sample Usage:
 #
 class nexus::install ($nexus_bundle, $nexus_package, $storage_loc) {
-  require java::java_7
+#  require java::java_7
 
   if $nexus_package == undef {
     $nexus_splitted = split($nexus_bundle, '-')
@@ -52,16 +52,27 @@ class nexus::install ($nexus_bundle, $nexus_package, $storage_loc) {
     target => "/opt/${nexus_package}",
     owner  => root,
     group  => root,
+    require => Exec['untar_nexus_bin'],
   }
 
-  download_uncompress { 'install_nexus':
-    distribution_name => $nexus_bundle,
-    dest_folder       => '/opt',
-    creates           => "/opt/${nexus_package}",
-    uncompress        => 'tar.gz',
-    user              => root,
-    group             => root,
-  } ->
+  exec {'wget_nexus_tar':
+    command => "/usr/bin/wget --progress=bar http://download.sonatype.com/nexus/oss/${nexus_bundle}",
+    unless  => "/usr/bin/test -f /opt/${nexus_bundle}",
+    cwd     => '/opt',
+    require => Package['wget'],
+  }
+
+  package { 'wget':
+    ensure => installed,
+  }
+
+  exec {'untar_nexus_bin':
+    command => "/bin/tar xvzf ${nexus_bundle}",
+    unless      => "/usr/bin/test -d /opt/${nexus_package}",
+    cwd          => '/opt',
+    require     =>  Exec['wget_nexus_tar'],
+  }
+
   file { '/opt/sonatype-work':
     ensure => link,
     force  => true,

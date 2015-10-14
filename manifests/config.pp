@@ -32,6 +32,7 @@ class nexus::config ($nexus_port, $java_home) {
     target => '/var/log/nexus',
     owner  => root,
     group  => root,
+    require => File['/opt/nexus'],
   }
 
   file { '/opt/nexus/tmp':
