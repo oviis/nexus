@@ -52,7 +52,6 @@ class nexus::install ($nexus_bundle, $nexus_package, $storage_loc) {
     target => "/opt/${nexus_package}",
     owner  => root,
     group  => root,
-    require => Exec['untar_nexus_bin'],
   }
 
   exec {'wget_nexus_tar':
